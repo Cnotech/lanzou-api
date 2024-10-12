@@ -1,5 +1,5 @@
 import { Err, Ok, Result } from "ts-results-es";
-import { load } from "cheerio";
+import { CheerioAPI, load } from "cheerio";
 import { ShareType } from "./types";
 
 export async function fetchPage(url: string): Promise<Result<string, string>> {
@@ -14,8 +14,7 @@ export async function fetchPage(url: string): Promise<Result<string, string>> {
   }
 }
 
-export function isFileOrFolder(htmlText: string): Result<ShareType, string> {
-  const $ = load(htmlText);
+export function isFileOrFolder($: CheerioAPI): Result<ShareType, string> {
   if ($("div#infomores").text().includes("更多")) {
     return new Ok("folder");
   }
@@ -23,4 +22,8 @@ export function isFileOrFolder(htmlText: string): Result<ShareType, string> {
     return new Ok("file");
   }
   return new Err("Error: Failed to judge file or folder");
+}
+
+export function isPasswordRequired($: CheerioAPI): boolean {
+  return !!$("input#pwd").length;
 }

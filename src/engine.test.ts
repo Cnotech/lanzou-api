@@ -1,7 +1,8 @@
 import { expect, test } from "vitest";
-import { fetchPage, isFileOrFolder } from "./utils";
+import { isFileOrFolder, isPasswordRequired } from "./utils";
 import { ShareType } from "./types";
 import { loadShareUrl } from "./engine";
+import { load } from "cheerio";
 
 const TESTING_TUPLES: { url: string; pwd?: string; type: ShareType }[] = [
   {
@@ -33,14 +34,13 @@ const TESTING_TUPLES: { url: string; pwd?: string; type: ShareType }[] = [
   },
 ];
 
-test("should load share and judge type", async () => {
+test("engine and judge utils", async () => {
   for (const { url, type, pwd } of TESTING_TUPLES) {
-    console.log(`Info: Processing '${url}'`);
+    console.log(`Info: Testing '${url}'`);
     const r = await loadShareUrl(url, pwd);
     expect(r.isOk).toBeTruthy();
-    // expect(r.unwrap()).includes(
-    //   type === "file" ? '<iframe class="ifr2"' : "filemoreajax.php?file=",
-    // );
-    expect(isFileOrFolder(r.unwrap()).unwrap()).toEqual(type);
+    const $ = load(r.unwrap());
+    expect(isFileOrFolder($).unwrap()).toEqual(type);
+    expect(isPasswordRequired($)).toEqual(!!pwd);
   }
 });
