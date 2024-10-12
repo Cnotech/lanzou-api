@@ -1,0 +1,24 @@
+{
+  "name": "lanzou-api",
+  "version": "1.0.0",
+  "description": "Lanzou api for nodejs",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "vitest"
+  },
+  "keywords": [
+    "lanzou"
+  ],
+  "author": "Cno",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=9"
+  },
+  "packageManager": "pnpm@9.12.1",
+  "devDependencies": {
+    "@types/node": "18",
+    "vite": "^5.4.8",
+    "vitest": "^2.1.2"
+  }
+}
