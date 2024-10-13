@@ -16,7 +16,7 @@ export async function fetchPage(url: string): Promise<Result<string, string>> {
     await mkdir(CACHE_DIR);
   }
   const md5 = calcMD5(url);
-  const cachePath = join(CACHE_DIR, md5);
+  const cachePath = join(CACHE_DIR, `${md5}.html`);
   if (existsSync(cachePath)) {
     const h = await readFile(cachePath);
     return new Ok(h.toString());

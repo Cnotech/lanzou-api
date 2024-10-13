@@ -18,7 +18,6 @@ export async function loadShareUrl(
     /<script>window\.location\.href='(\/\w+\?p)';<\/script>/,
   );
   if (m?.length) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, nextPath] = m;
     const urlInstance = new URL(url);
     const nextUrl = `${urlInstance.origin}${nextPath}`;
