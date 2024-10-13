@@ -104,9 +104,15 @@ export function parseRequestCtx(
     }
     if (insideBlock) {
       // 遇到结束的花括号
+      if (line.endsWith("},")) {
+        insideBlock = false;
+        dataText += line;
+        break;
+      }
       if (line.startsWith("}")) {
         insideBlock = false;
         dataText += "}";
+        break;
       }
       // 添加行
       dataText += line + "\n";
