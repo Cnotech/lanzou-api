@@ -87,7 +87,15 @@ export function parseRequestCtx(
     if (/data\s*:\s*{/.test(line)) {
       // 特殊处理整个对象都在一行内的
       if (line.endsWith("},")) {
-        dataText = line.split(":")[1].replace(",", "").trim();
+        dataText = line
+          .replace(/data\s*:\s*/, "")
+          .replace(/,/g, ",\n")
+          .trim();
+        if (dataText.endsWith(",")) dataText = dataText.slice(0, -1);
+        if (dataText.startsWith("{")) dataText = dataText.slice(1);
+        if (dataText.endsWith("}")) dataText = dataText.slice(0, -1);
+        dataText = `{\n${dataText.trim()}\n}`;
+        // console.log(dataText);
         break;
       }
       insideBlock = true;
@@ -150,9 +158,11 @@ export function parseRequestCtx(
     buf += `${key}:${trueValue},`;
   }
   buf += "}";
+  buf = buf.replace(/'/g, '"');
 
   // 解析 data 对象获取 json
-  const data = RJson.parse(buf.replace(/'/g, '"'));
+  console.log(114, buf, 514);
+  const data = RJson.parse(buf);
 
   return { url, data };
 }

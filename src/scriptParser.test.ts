@@ -116,4 +116,50 @@ test("parseRequestCtx", () => {
     },
     url: "/filemoreajax.php?file=851982",
   });
+
+  const inlineDataBlock = `\t\t$.ajax({
+\t\t\ttype : 'post',
+\t\t\turl : '/ajaxm.php?file=45198696',
+\t\t\tdata : { 'action':'downprocess','sign':skdklds,'p':pwd,'kd':kdns },
+
+\t\t\tdataType : 'json',
+\t\t\tsuccess:function(msg){
+\t\t\t\tvar date = msg;
+\t\t\t\tvar dom_down = date.dom;
+\t\t\t\tif(date.zt == '1'){
+\t\t\t\t\t$("#downajax").html("<a href="+dom_down+"/file/"+ date.url + lanosso +" target=_blank rel=noreferrer>下载</a>");
+\t\t\t\t\t$("#passwddiv").hide();
+\t\t\t\t\t$("#filenajax").text(date.inf);
+\t\t\t\t\tdocument.title = date.inf;
+\t\t\t\t\t$(".n_box_des").show();
+\t\t\t\t\t$("#file").removeClass("filter");
+\t\t\t\t}else{
+\t\t\t\t\t$("#info").text(date.inf);
+\t\t\t\t};
+\t\t\t\t
+\t\t\t},
+\t\t\terror:function(){
+\t\t\t\t$("#info").html("失败，请刷新");
+\t\t\t}
+\t
+\t\t});`;
+
+  expect(
+    parseRequestCtx(inlineDataBlock, {
+      identifiersValue: {
+        skdklds:
+          "UjQHOQ4_aAzIDCgs0UGBUaFs1UmJXOQM4AT4DM1E0UWZTdQIhDGwGYwloCm5UOAE4VD4GM1M8VmxVYA_c_c",
+        kdns: "1",
+      },
+      pwd: "114514",
+    }),
+  ).toEqual({
+    data: {
+      action: "downprocess",
+      sign: "UjQHOQ4_aAzIDCgs0UGBUaFs1UmJXOQM4AT4DM1E0UWZTdQIhDGwGYwloCm5UOAE4VD4GM1M8VmxVYA_c_c",
+      p: "114514",
+      kd: 1,
+    },
+    url: "/ajaxm.php?file=45198696",
+  });
 });
