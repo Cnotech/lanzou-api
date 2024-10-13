@@ -6,4 +6,8 @@
 - 旧版文件夹分享：https://www.lanzouo.com/b0ufrtlc
 - 新版文件夹分享：https://zykeji.lanzoui.com/b02k546mf
 - 旧版文件夹带密码分享：https://yuandan.lanzouw.com/b02clwpxg 密码：a765
-- 新版文件夹带密码分享：https://lanzoui.com/b481564 密码：a08l
+- 新版文件夹带密码分享：https://lanzoui.com/b481564 密码：a08l （超长文件列表）
+
+## TODO
+- 支持超长列表翻页
+- 支持嵌套文件夹分享

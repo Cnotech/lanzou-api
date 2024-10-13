@@ -7,24 +7,27 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { join } from "node:path";
 
+const ENABLE_CACHE = false;
+
 function calcMD5(text: string) {
   return createHash("md5").update(text).digest("hex");
 }
 
 export async function fetchPage(url: string): Promise<Result<string, string>> {
-  if (!existsSync(CACHE_DIR)) {
+  console.log(`Info: Fetching page '${url}'`);
+  if (ENABLE_CACHE && !existsSync(CACHE_DIR)) {
     await mkdir(CACHE_DIR);
   }
   const md5 = calcMD5(url);
   const cachePath = join(CACHE_DIR, `${md5}.html`);
-  if (existsSync(cachePath)) {
+  if (ENABLE_CACHE && existsSync(cachePath)) {
     const h = await readFile(cachePath);
     return new Ok(h.toString());
   }
   try {
     const res = await fetch(url);
     const t = await res.text();
-    await writeFile(cachePath, t);
+    if (ENABLE_CACHE) await writeFile(cachePath, t);
     return new Ok(t);
   } catch (e) {
     return new Err(
