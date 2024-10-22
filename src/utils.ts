@@ -36,6 +36,31 @@ export async function fetchPage(url: string): Promise<Result<string, string>> {
   }
 }
 
+export async function fetchDirectLink(rawDownloadUrl: string) {
+  try {
+    const r = await fetch(rawDownloadUrl, {
+      method: "HEAD",
+      redirect: "manual",
+      headers: {
+        "Accept-Language": "zh-CN,zh;q=0.9",
+      },
+    });
+    console.log(r.status, r.statusText);
+    const next = r.headers.get("location");
+    if (next) return next;
+    else
+      console.warn(
+        `Warning: Failed to fetch direct link for '${rawDownloadUrl}' : 'location field not found in headers', fallback to raw url`,
+      );
+  } catch (e) {
+    console.warn(
+      `Warning: Failed to fetch direct link for '${rawDownloadUrl}' : '${e}', fallback to raw url`,
+    );
+  }
+
+  return rawDownloadUrl;
+}
+
 export function isFileOrFolder($: CheerioAPI): Result<ShareType, string> {
   if ($("div#infomores").text().includes("更多")) {
     return new Ok("folder");

@@ -1,5 +1,6 @@
 import { Err, Ok, Result } from "ts-results-es";
 import { FileMoreRes, FileNodeRaw } from "./types";
+import { fetchDirectLink } from "./utils";
 
 export async function fileMoreApi({
   shareUrl,
@@ -14,15 +15,15 @@ export async function fileMoreApi({
 
   // 向 api 发起请求
   const apiUrl = `${urlInstance.origin}${apiPath}`;
+  const body = new FormData();
+  for (const [key, value] of Object.entries(
+    apiPayload as Record<string, string>,
+  )) {
+    body.append(key, value?.toString() ?? "");
+  }
   console.log(
     `Info: Fetching '${apiUrl}' with payload '${JSON.stringify(apiPayload)}'`,
   );
-  const body = new FormData();
-  for (const [key, value] of Object.entries(
-    apiPayload as Record<string, unknown>,
-  )) {
-    body.append(key, value as string);
-  }
   const r = await fetch(apiUrl, {
     method: "POST",
     body,
@@ -39,6 +40,7 @@ export async function fileMoreApi({
     url?: number;
     text?: FileNodeRaw[];
   } = await r.json();
+  console.log(`Info: Response json : \n${JSON.stringify(json, null, 2)}`);
   const info = json.inf || json.info || "NO_INFO_RETURNED";
   if (json.zt !== 1) {
     return new Err(
@@ -51,7 +53,7 @@ export async function fileMoreApi({
     return new Ok({
       type: "file",
       name: info,
-      downloadUrl: `${json.dom}/file/${json.url}`,
+      downloadUrl: await fetchDirectLink(`${json.dom}/file/${json.url}`),
     });
   }
 

@@ -18,12 +18,12 @@ export function parseScriptBlock(text: string) {
       const [_, key] = declM;
       identifiersValue[key] = "null";
     }
-    const exprM = line.match(/([_\w]+)\s*=\s*(['"]?[_\w]+['"]?)\s*;?/);
+    const exprM = line.match(/([_\w]+)\s*=\s*(['"]?[_\w?]+['"]?)\s*;?/);
     if (exprM) {
       const [_, key, value] = exprM;
       identifiersValue[key] = value;
     }
-    const varM = line.match(/var\s+([_\w]+)\s*=\s*(['"]?[_\w]+['"]?)\s*;?/);
+    const varM = line.match(/var\s+([_\w]+)\s*=\s*(['"]?[_\w?]+['"]?)\s*;?/);
     if (varM) {
       const [_, key, value] = varM;
       identifiersValue[key] = value;
@@ -129,6 +129,7 @@ export function parseRequestCtx(
 
   const getValue = (identifier: string) => {
     if (identifier === "pwd") return `"${pwd}"`;
+    if (identifier === "kdns") return `1`;
     const v = identifiersValue[identifier];
     if (!v) {
       throw new Error(
