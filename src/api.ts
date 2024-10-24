@@ -29,7 +29,7 @@ export async function fileMoreApi({
     body,
     headers: {
       origin: urlInstance.origin,
-      referrer: shareUrl,
+      referer: shareUrl,
     },
   });
   const json: {
