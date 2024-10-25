@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { ShareType } from "./types";
 import { loadShareUrl } from "./engine";
 
@@ -31,15 +31,28 @@ const TESTING_TUPLES: { url: string; pwd?: string; type: ShareType }[] = [
     pwd: "a08l",
   },
 ];
-
-test("engine and judge utils", async () => {
-  for (const { url, pwd } of TESTING_TUPLES) {
-    // eslint-disable-next-line no-console
-    console.log(`Info: Testing '${url}'`);
-    const r = await loadShareUrl(url, pwd);
-    expect(r.isOk).toBeTruthy();
-    // eslint-disable-next-line no-console
-    console.log(JSON.stringify(r.unwrap(), null, 2));
-    // expect(r.unwrap()).toEqual([])
-  }
+const logs: string[] = [];
+describe("engine", () => {
+  beforeEach(() => {
+    vi.mock("./log", async () => {
+      return {
+        log: (text: string) => logs.push(text),
+      };
+    });
+  });
+  test("engine and judge utils", async () => {
+    // 执行测试
+    for (const { url, pwd } of TESTING_TUPLES) {
+      // eslint-disable-next-line no-console
+      console.log(`Info: Testing '${url}'`);
+      const r = await loadShareUrl(url, pwd);
+      expect(r.isOk).toBeTruthy();
+      // eslint-disable-next-line no-console
+      console.log(JSON.stringify(r.unwrap(), null, 2));
+      // expect(r.unwrap()).toEqual([])
+    }
+    // 断言控制台打印中没有 Warning
+    expect(logs.length).toBeTruthy();
+    expect(logs.find((t) => t.startsWith("Warning"))).toBeFalsy();
+  });
 });
