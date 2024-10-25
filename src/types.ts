@@ -12,7 +12,7 @@ export interface FileNodeRaw {
 export type FileMoreRes =
   | {
       type: "file";
-      name: string;
+      name: string | null;
       downloadUrl: string;
     }
   | {

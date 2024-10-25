@@ -34,6 +34,7 @@ export async function loadShareUrl(
     htmlText = r.unwrap();
   }
   let $ = load(htmlText);
+  const htmlTitle = $("body > div.d > div:nth-child(1)").text();
 
   // 对于旧版文件分享页面，使用 iframe 的网页源码
   const iframeQ = $("iframe");
@@ -83,6 +84,12 @@ export async function loadShareUrl(
   });
   if (res.isErr()) {
     return res;
+  }
+  const apiRes = res.unwrap();
+
+  // 补充缺失的文件名 - 对应旧版文件分享
+  if (apiRes.type === "file" && apiRes.name === null && htmlTitle) {
+    apiRes.name = htmlTitle;
   }
 
   return new Ok(res.unwrap());

@@ -42,7 +42,7 @@ export async function fileMoreApi({
     text?: FileNodeRaw[];
   } = await r.json();
   // log(`Info: Response json : \n${JSON.stringify(json, null, 2)}`);
-  const info = json.inf || json.info || "NO_INFO_RETURNED";
+  const info = json.inf || json.info || null;
   if (json.zt !== 1) {
     return new Err(
       `Error: Lanzou api returned error status '${json.zt}' : '${info}'`,
