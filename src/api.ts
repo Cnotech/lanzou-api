@@ -1,6 +1,6 @@
 import { Err, Ok, Result } from "ts-results-es";
 import { FileMoreRes, FileNodeRaw } from "./types";
-import { fetchDirectLink } from "./utils";
+import { fetchDirectLink, getRandomIPHeader } from "./utils";
 import { log } from "./log";
 
 export async function fileMoreApi({
@@ -29,6 +29,7 @@ export async function fileMoreApi({
     method: "POST",
     body,
     headers: {
+      ...getRandomIPHeader(),
       origin: urlInstance.origin,
       referer: shareUrl,
     },

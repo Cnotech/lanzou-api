@@ -26,7 +26,9 @@ export async function fetchPage(url: string): Promise<Result<string, string>> {
     return new Ok(h.toString());
   }
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, {
+      headers: getRandomIPHeader(),
+    });
     const t = await res.text();
     if (ENABLE_CACHE) await writeFile(cachePath, t);
     return new Ok(t);
@@ -43,6 +45,7 @@ export async function fetchDirectLink(rawDownloadUrl: string) {
       method: "HEAD",
       redirect: "manual",
       headers: {
+        ...getRandomIPHeader(),
         "Accept-Language": "zh-CN,zh;q=0.9",
       },
     });
@@ -79,4 +82,27 @@ export function isFileOrFolder($: CheerioAPI): Result<ShareType, string> {
 
 export function isPasswordRequired($: CheerioAPI): boolean {
   return !!$("input#pwd").length;
+}
+
+function generateRandomIPv4(): string {
+  function getRandomInt(min: number, max: number): number {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  const parts: number[] = [];
+  for (let i = 0; i < 4; i++) {
+    parts.push(getRandomInt(0, 255));
+  }
+
+  return parts.join(".");
+}
+
+export function getRandomIPHeader() {
+  const ip = generateRandomIPv4();
+  return {
+    "X-FORWARDED-FOR": ip,
+    "CLIENT-IP": ip,
+  };
 }
