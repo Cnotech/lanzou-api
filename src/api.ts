@@ -1,6 +1,7 @@
 import { Err, Ok, Result } from "ts-results-es";
 import { FileMoreRes, FileNodeRaw } from "./types";
 import { fetchDirectLink } from "./utils";
+import { log } from "./log";
 
 export async function fileMoreApi({
   shareUrl,
@@ -21,7 +22,7 @@ export async function fileMoreApi({
   )) {
     body.append(key, value?.toString() ?? "");
   }
-  console.log(
+  log(
     `Info: Fetching '${apiUrl}' with payload '${JSON.stringify(apiPayload)}'`,
   );
   const r = await fetch(apiUrl, {
@@ -40,7 +41,7 @@ export async function fileMoreApi({
     url?: number;
     text?: FileNodeRaw[];
   } = await r.json();
-  console.log(`Info: Response json : \n${JSON.stringify(json, null, 2)}`);
+  log(`Info: Response json : \n${JSON.stringify(json, null, 2)}`);
   const info = json.inf || json.info || "NO_INFO_RETURNED";
   if (json.zt !== 1) {
     return new Err(

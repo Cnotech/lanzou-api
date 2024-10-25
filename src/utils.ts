@@ -6,6 +6,7 @@ import { CACHE_DIR } from "./constants";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { join } from "node:path";
+import { log } from "./log";
 
 const ENABLE_CACHE = false;
 
@@ -14,7 +15,7 @@ function calcMD5(text: string) {
 }
 
 export async function fetchPage(url: string): Promise<Result<string, string>> {
-  console.log(`Info: Fetching page '${url}'`);
+  log(`Info: Fetching page '${url}'`);
   if (ENABLE_CACHE && !existsSync(CACHE_DIR)) {
     await mkdir(CACHE_DIR);
   }
@@ -45,15 +46,20 @@ export async function fetchDirectLink(rawDownloadUrl: string) {
         "Accept-Language": "zh-CN,zh;q=0.9",
       },
     });
-    console.log(r.status, r.statusText);
-    const next = r.headers.get("location");
-    if (next) return next;
-    else
-      console.warn(
-        `Warning: Failed to fetch direct link for '${rawDownloadUrl}' : 'location field not found in headers', fallback to raw url`,
+    if (r.status === 302) {
+      const next = r.headers.get("location");
+      if (next) return next;
+      else
+        log(
+          `Warning: Failed to fetch direct link for '${rawDownloadUrl}' : 'location field not found in headers', fallback to raw url`,
+        );
+    } else {
+      log(
+        `Warning: Failed to fetch direct link for '${rawDownloadUrl}' : 'invalid status code ${r.status}', fallback to raw url`,
       );
+    }
   } catch (e) {
-    console.warn(
+    log(
       `Warning: Failed to fetch direct link for '${rawDownloadUrl}' : '${e}', fallback to raw url`,
     );
   }

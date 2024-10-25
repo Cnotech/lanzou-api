@@ -5,6 +5,7 @@ import { load } from "cheerio";
 import { parseRequestCtx, parseScriptBlock } from "./scriptParser";
 import { fileMoreApi } from "./api";
 import { FileMoreRes } from "./types";
+import { log } from "./log";
 
 export async function loadShareUrl(
   url: string,
@@ -25,7 +26,7 @@ export async function loadShareUrl(
   if (m?.length) {
     const [_, nextPath] = m;
     const nextUrl = `${urlInstance.origin}${nextPath}`;
-    console.log(`Info: Redirected to ${nextUrl}`);
+    log(`Info: Redirected to ${nextUrl}`);
     const r = await fetchPage(nextUrl);
     if (r.isErr()) {
       return r;
@@ -43,7 +44,7 @@ export async function loadShareUrl(
     if (fRes.isErr()) {
       return fRes;
     }
-    console.log(`Info: Use html source from '${requestUrl}'`);
+    log(`Info: Use html source from '${requestUrl}'`);
     htmlText = fRes.unwrap();
     $ = load(htmlText);
   }

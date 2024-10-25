@@ -34,9 +34,11 @@ const TESTING_TUPLES: { url: string; pwd?: string; type: ShareType }[] = [
 
 test("engine and judge utils", async () => {
   for (const { url, pwd } of TESTING_TUPLES) {
+    // eslint-disable-next-line no-console
     console.log(`Info: Testing '${url}'`);
     const r = await loadShareUrl(url, pwd);
     expect(r.isOk).toBeTruthy();
+    // eslint-disable-next-line no-console
     console.log(JSON.stringify(r.unwrap(), null, 2));
     // expect(r.unwrap()).toEqual([])
   }
