@@ -1,8 +1,7 @@
 node_modules/
 demo/
 cache/
-src/_snapshots_/
-src/*.test.ts
+src/
 eslint.config.mjs
 .vscode
 .idea

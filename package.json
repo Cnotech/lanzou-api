@@ -1,11 +1,13 @@
 {
   "name": "lanzou-api",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Lanzou api for nodejs",
   "repository": "https://github.com/Cnotech/lanzou-api",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "vitest",
+    "build": "tsc",
+    "test": "cross-env NODE_ENV=dev && vitest",
     "lint": "eslint --fix ./src"
   },
   "keywords": [
@@ -21,6 +23,7 @@
     "@eslint/js": "^9.12.0",
     "@types/node": "18",
     "@types/relaxed-json": "^1.0.4",
+    "cross-env": "^7.0.3",
     "eslint": "^9.12.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
