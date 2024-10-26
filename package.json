@@ -1,6 +1,6 @@
 {
   "name": "lanzou-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lanzou api for nodejs",
   "repository": "https://github.com/Cnotech/lanzou-api",
   "main": "src/index.ts",
