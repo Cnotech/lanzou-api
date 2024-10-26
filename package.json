@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc",
     "test": "cross-env NODE_ENV=dev && vitest",
-    "publish": "pnpm build && pnpm publish",
+    "pub": "pnpm build && pnpm publish",
     "lint": "eslint --fix ./src"
   },
   "keywords": [
