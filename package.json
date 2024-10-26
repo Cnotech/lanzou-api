@@ -1,6 +1,6 @@
 {
   "name": "lanzou-api",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Lanzou api for nodejs",
   "main": "src/index.ts",
   "scripts": {
@@ -16,7 +16,6 @@
     "node": ">=18",
     "pnpm": ">=9"
   },
-  "packageManager": "pnpm@9.12.1",
   "devDependencies": {
     "@eslint/js": "^9.12.0",
     "@types/node": "18",
@@ -34,5 +33,6 @@
     "cheerio": "^1.0.0",
     "relaxed-json": "^1.0.3",
     "ts-results-es": "^4.2.0"
-  }
+  },
+  "packageManager": "pnpm@9.12.2"
 }
