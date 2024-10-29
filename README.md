@@ -29,7 +29,7 @@ if (data.type === "folder"){
   // 查找需要下载的文件
   const fileNode = data.nodes.find(n => n.name === "咬钩.txt");
   // 二次加载具体文件的分享链接
-  if (fileNode.shareUrl){
+  if (fileNode?.shareUrl){
     const r = (await loadShareUrl(fileNode.shareUrl)).unwrap();
     if (r.type === "file") {
       console.log(r.downloadUrl);
