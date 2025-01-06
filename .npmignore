@@ -5,3 +5,4 @@ src/
 eslint.config.mjs
 .vscode
 .idea
+*.test.*
